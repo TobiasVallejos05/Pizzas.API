@@ -14,37 +14,60 @@ namespace Pizzas.API.Controllers
     {
         [HttpGet]
         public IActionResult GetAll(){
-            Pizza Aux;
-            Aux = BD.TraerPizzas();
-            return Ok(Aux);
+            List<Pizza> ListaPizzas = BD.TraerPizzas();
+            return Ok(ListaPizzas);
         }
-        
+
         [HttpGet("{id}")]
-        public IActionResult GetById(int id){
-            Pizza Aux;
-            Aux = BD.TraerPizzasPorId(id);
-            return Ok(Aux);
+        public IActionResult GetById(int Id){
+            Pizza UnaPizza = BD.TraerPizzasPorId(Id);
+            if (UnaPizza == null){
+                return NotFound();
+            }
+            return Ok(UnaPizza);
         }
 
         [HttpPost]
-        public IActionResult Create (Pizza pizza){
-            Pizza Aux;
-            Aux = BD.CrearPizzas(pizza);
-            return Ok(Aux);
+        public IActionResult Create(Pizza UnaPizza){
+            int PizzaCreada;
+            PizzaCreada = BD.CrearPizzas(UnaPizza);
+            if (PizzaCreada == 0){
+                return BadRequest();
+            }
+            else{
+                return Ok(UnaPizza);
+            }
+            
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, Pizza pizza){
-            Pizza Aux;
-            Aux = BD.ActualizarPizzas(id, pizza);
-            return Ok(Aux);
+        public IActionResult Update(int Id, Pizza UnaPizza){
+            int PizzaCambiada;
+            if (Id != UnaPizza.Id){
+                return BadRequest();
+            }
+            Pizza PizzaExistente = BD.TraerPizzasPorId(Id);
+            if (PizzaExistente == null){
+                return NotFound();
+            }
+
+            PizzaCambiada = BD.ActualizarPizzas(UnaPizza);
+            if(PizzaCambiada == 0){
+                return BadRequest();
+            }
+            else{
+                return Ok();
+            }
         }
 
         [HttpDelete("{id}")]
         public IActionResult DeleteById(int id){
-            Pizza Aux;
-            Aux = BD.EliminarPizzas(id);
-            return Ok(Aux);
+            Pizza PizzaExistente = BD.TraerPizzasPorId(id);
+            if(PizzaExistente == null){
+                return NotFound();
+            }
+            BD.Delete(Id);
+            return Ok();
         }
     }
 }

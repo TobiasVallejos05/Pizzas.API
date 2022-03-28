@@ -1,5 +1,4 @@
 using System;
-
 namespace Pizzas.API.Models
 {
     public class Pizza
