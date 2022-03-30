@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Pizzas.API.Models;
+using Pizzas.API.Services;
 
 namespace Pizzas.API.Controllers
 {
@@ -14,13 +15,13 @@ namespace Pizzas.API.Controllers
     {
         [HttpGet]
         public IActionResult GetAll(){
-            List<Pizza> ListaPizzas = BD.TraerPizzas();
+            List<Pizza> ListaPizzas = PizzasServices.TraerPizzas();
             return Ok(ListaPizzas);
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int Id){
-            Pizza UnaPizza = BD.TraerPizzasPorId(Id);
+            Pizza UnaPizza = PizzasServices.TraerPizzasPorId(Id);
             if (UnaPizza == null){
                 return NotFound();
             }
@@ -30,7 +31,7 @@ namespace Pizzas.API.Controllers
         [HttpPost]
         public IActionResult Create(Pizza UnaPizza){
             int PizzaCreada;
-            PizzaCreada = BD.CrearPizzas(UnaPizza);
+            PizzaCreada = PizzasServices.CrearPizzas(UnaPizza);
             if (PizzaCreada == 0){
                 return BadRequest();
             }
@@ -46,12 +47,12 @@ namespace Pizzas.API.Controllers
             if (Id != UnaPizza.Id){
                 return BadRequest();
             }
-            Pizza PizzaExistente = BD.TraerPizzasPorId(Id);
+            Pizza PizzaExistente = PizzasServices.TraerPizzasPorId(Id);
             if (PizzaExistente == null){
                 return NotFound();
             }
 
-            PizzaCambiada = BD.ActualizarPizzas(UnaPizza);
+            PizzaCambiada = PizzasServices.ActualizarPizzas(UnaPizza);
             if(PizzaCambiada == 0){
                 return BadRequest();
             }
@@ -62,7 +63,7 @@ namespace Pizzas.API.Controllers
 
         [HttpDelete("{id}")]
         public IActionResult DeleteById(int id){
-            Pizza PizzaExistente = BD.TraerPizzasPorId(id);
+            Pizza PizzaExistente = PizzasServices.TraerPizzasPorId(id);
             if(PizzaExistente == null){
                 return NotFound();
             }
