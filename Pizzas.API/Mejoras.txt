@@ -1,7 +1,8 @@
 Try & Catch
 Implementar Servicios
 Implementar Configuration Helper
-Implementar Store Procedures
+
+Implementar Stored Procedures
 Creacion de tabla usuarios, donde un usuario puede pedir una sola pizza
 Creacion de User Controller que me permita crear, actualizar, obtener y eliminar usuarios
 
